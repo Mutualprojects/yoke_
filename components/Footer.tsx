@@ -82,7 +82,7 @@ export default function Footer() {
               Company
             </h3>
             <ul className="flex flex-col gap-4 text-sm font-medium text-white/60">
-              {["About Us", "Our Products", "Solutions", "Services", "Contact"].map((link, i) => (
+              {["About Us", "Our Products", "Solutions", "Services", "Contact Us"].map((link, i) => (
                 <li key={i}>
                   <Link href={`/${link.toLowerCase().replace(" ", "-")}`} className="group flex items-center gap-2 transition-colors hover:text-white">
                     <span className="h-[2px] w-0 bg-[#F18805] transition-all duration-300 group-hover:w-3" />
@@ -99,11 +99,17 @@ export default function Footer() {
               Capabilities
             </h3>
             <ul className="flex flex-col gap-4 text-sm font-medium text-white/60">
-              {["Roller Conveyors", "Belt Conveyors", "Sortation Systems", "Automated Packaging", "Custom Fabrication"].map((link, i) => (
+              {[
+                { label: "Motorised Roller Lines", slug: "motorised-roller-lines" },
+                { label: "Bespoke Systems", slug: "bespoke-conveyor-systems" },
+                { label: "Packing & Sorting", slug: "packing-sorting-belts" },
+                { label: "Truck Loading", slug: "truck-loading-conveyors" },
+                { label: "Food Grade Belts", slug: "fda-food-grade-belts" }
+              ].map((link, i) => (
                 <li key={i}>
-                  <Link href={`/products/${link.toLowerCase().replace(" ", "-")}`} className="group flex items-center gap-2 transition-colors hover:text-white">
+                  <Link href={`/products/${link.slug}`} className="group flex items-center gap-2 transition-colors hover:text-white">
                     <span className="h-[2px] w-0 bg-[#F18805] transition-all duration-300 group-hover:w-3" />
-                    {link}
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -130,7 +136,7 @@ export default function Footer() {
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-white/5 text-[#F18805]">
                   <Phone className="h-4 w-4" />
                 </div>
-                <a href="tel:+919951515950">+91 99515 15950</a>
+                <a href="tel:+91975228999">+91 97522 8999</a>
               </li>
               <li className="flex items-center gap-4 transition-colors hover:text-white">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-white/5 text-[#F18805]">

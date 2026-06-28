@@ -259,7 +259,7 @@ export default function Header() {
             alt="Yoke Conveyors & Equipments"
             width={600}
             height={600}
-            className="w-[150px] h-[150px] lg:w-[200px] lg:h-[200px] object-contain object-left transition-all duration-300 group-hover:scale-[1.01]"
+            className="h-[150px] w-auto lg:h-[200px] object-contain object-left transition-all duration-300 group-hover:scale-[1.01]"
             priority
           />
         </a>
@@ -291,6 +291,13 @@ export default function Header() {
             className="text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805]"
           >
             Full Catalog
+          </a>
+          <a
+            href="/contact-us"
+            onMouseEnter={() => setActiveDropdown(null)}
+            className="text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805]"
+          >
+            Contact
           </a>
 
         </nav>
@@ -411,6 +418,13 @@ export default function Header() {
                   className="border-b border-[#083C75]/5 pb-2 text-base font-bold tracking-wide"
                 >
                   About
+                </a>
+                <a
+                  href="/contact-us"
+                  onClick={closeMobile}
+                  className="border-b border-[#083C75]/5 pb-2 text-base font-bold tracking-wide"
+                >
+                  Contact
                 </a>
               </nav>
             </motion.div>
