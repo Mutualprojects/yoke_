@@ -116,99 +116,40 @@ function IndustryCard({
       className={`group relative shrink-0 cursor-pointer overflow-hidden rounded-[4px] border border-neutral-200 bg-white shadow-sm transition-all duration-700 hover:border-[#04091a] ${className}`}
     >
       {/* Background Image Container */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-neutral-100">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#04091a]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={item.image}
           alt={item.title}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05] opacity-90 group-hover:opacity-100"
+          className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.08] opacity-80 group-hover:opacity-100"
         />
-        {/* Zara-like light-contrast gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-black/5 transition-opacity duration-500" />
+        {/* Subtle dark gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10 transition-opacity duration-500" />
       </div>
 
       {/* Serial & Total Info — Minimal layout */}
       <div className="absolute left-6 top-6 z-10 flex items-baseline gap-1">
-        <span className="font-mono text-lg font-medium tracking-tight text-[#04091a]">
+        <span className="font-mono text-lg font-medium tracking-tight text-white">
           {serial}
         </span>
-        <span className="font-mono text-[0.62rem] font-bold text-[#04091a]/40">
+        <span className="font-mono text-[0.62rem] font-bold text-white/60">
           /{totalStr}
         </span>
       </div>
 
       {/* Category Tag */}
       <div className="absolute right-6 top-6 z-10">
-        <span className="inline-block rounded-[2px] border border-[#04091a]/15 bg-white/70 px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-widest text-[#04091a] backdrop-blur-sm">
+        <span className="inline-block rounded-[2px] border border-white/20 bg-black/40 px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
           {item.category}
         </span>
       </div>
 
-      {/* Card Content */}
-      <div
-        className={`absolute inset-x-0 bottom-0 z-10 flex flex-col gap-3 p-6 sm:p-8 transition-transform duration-500 ${
-          open ? "translate-y-0" : "translate-y-12 group-hover:translate-y-0"
-        }`}
-        style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
-      >
-        <h3 className="text-xl font-light uppercase tracking-wide text-[#04091a] sm:text-2xl">
+      {/* Card Content - Title Only */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col p-6 sm:p-8">
+        <h3 className="text-xl font-medium uppercase tracking-wide text-white sm:text-2xl transition-colors duration-300 group-hover:text-[#F18805] drop-shadow-md">
           {item.title}
         </h3>
-
-        <p
-          className={`text-[0.88rem] font-light leading-relaxed text-neutral-600 transition-all duration-500 ${
-            open ? "opacity-100 max-h-[80px]" : "opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-[80px] overflow-hidden"
-          }`}
-        >
-          {item.desc}
-        </p>
-
-        {/* Technical Specs */}
-        <div
-          className={`flex items-center gap-2.5 border-t border-neutral-200 pt-4 transition-all duration-500 ${
-            open ? "opacity-100" : "opacity-0 group-hover:opacity-100 delay-75"
-          }`}
-        >
-          <span className="h-[1px] w-3 bg-[#F18805]" />
-          <span className="font-mono text-[0.65rem] font-semibold uppercase tracking-wider text-neutral-500">
-            {item.spec}
-          </span>
-        </div>
-
-        {/* Explore Button / CTA */}
-        {item.slug ? (
-          <Link
-            href={`/products/${item.slug}`}
-            className={`mt-1 flex items-center justify-between transition-all duration-500 ${
-              open
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 delay-100"
-            }`}
-          >
-            <span className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#04091a] border-b border-[#04091a] pb-0.5">
-              Explore Solutions
-            </span>
-            <div className="flex size-9 items-center justify-center rounded-full bg-[#04091a] text-white transition-all duration-300 group-hover:translate-x-1 group-hover:scale-105">
-              <ArrowRight className="size-4" />
-            </div>
-          </Link>
-        ) : (
-          <div
-            className={`mt-1 flex items-center justify-between transition-all duration-500 ${
-              open
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 delay-100"
-            }`}
-          >
-            <span className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#04091a] border-b border-[#04091a] pb-0.5">
-              Explore Solutions
-            </span>
-            <div className="flex size-9 items-center justify-center rounded-full bg-[#04091a] text-white transition-all duration-300 group-hover:translate-x-1 group-hover:scale-105">
-              <ArrowRight className="size-4" />
-            </div>
-          </div>
-        )}
       </div>
     </motion.div>
   );
