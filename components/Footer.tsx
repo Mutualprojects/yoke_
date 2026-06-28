@@ -153,7 +153,23 @@ export default function Footer() {
         {/* Bottom Bar positioned absolutely over the watermark */}
         <div className="absolute bottom-0 left-0 right-0 z-10 w-full px-6 py-8 sm:px-12 lg:px-24">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-xs font-medium text-white/40 md:flex-row">
-            <p>&copy; {new Date().getFullYear()} Yoke Conveyors & Equipments. All rights reserved.</p>
+            <div className="flex flex-col items-center gap-1 md:items-start">
+              <p>
+                &copy; {new Date().getFullYear()} Yoke Conveyors & Equipments. All rights reserved under{" "}
+                <a
+                  href="https://www.clickdiji.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-white transition-colors hover:text-[#F18805]"
+                >
+                  Clickdiji
+                </a>
+                .
+              </p>
+              <p className="text-white/30">
+                Designed and developed by Sirigineedi Balaji
+              </p>
+            </div>
             <div className="flex gap-8">
               <Link href="/privacy" className="transition-colors hover:text-[#F18805]">Privacy Policy</Link>
               <Link href="/terms" className="transition-colors hover:text-[#F18805]">Terms of Service</Link>
