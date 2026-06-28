@@ -58,8 +58,8 @@ export default function ContactUsPage() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-widest text-[#04091a]/50 mb-1">Call Us</h4>
-                    <a href="tel:+91975228999" className="text-lg font-medium text-[#04091a] hover:text-[#F18805] transition-colors">
-                      +91 97522 8999
+                    <a href="tel:+919705228999" className="text-lg font-medium text-[#04091a] hover:text-[#F18805] transition-colors">
+                      +91 97052 28999
                     </a>
                   </div>
                 </div>
