@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
@@ -227,15 +228,13 @@ export default function Header() {
     <a
       href={href}
       onMouseEnter={() => setActiveDropdown(type)}
-      className={`flex items-center gap-1 text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805] ${
-        activeDropdown === type ? "text-[#F18805]" : ""
-      }`}
+      className={`flex items-center gap-1 text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805] ${activeDropdown === type ? "text-[#F18805]" : ""
+        }`}
     >
       {label}
       <ChevronDown
-        className={`size-3.5 transition-transform duration-300 ${
-          activeDropdown === type ? "rotate-180 text-[#F18805]" : ""
-        }`}
+        className={`size-3.5 transition-transform duration-300 ${activeDropdown === type ? "rotate-180 text-[#F18805]" : ""
+          }`}
       />
     </a>
   );
@@ -243,11 +242,10 @@ export default function Header() {
   return (
     <header
       onMouseLeave={() => setActiveDropdown(null)}
-      className={`fixed left-0 right-0 top-0 z-50 w-full border-b border-[#083C75]/10 bg-white font-sans text-[#083C75] transition-all duration-300 ${
-        isScrolled
-          ? "h-20 bg-white/95 shadow-[0_10px_30px_rgba(8,60,117,0.08)] backdrop-blur-md"
-          : "h-28 bg-white/85 backdrop-blur-sm"
-      }`}
+      className={`fixed left-0 right-0 top-0 z-50 w-full border-b border-[#083C75]/10 bg-white font-sans text-[#083C75] transition-all duration-300 ${isScrolled
+        ? "h-20 bg-white/95 shadow-[0_10px_30px_rgba(8,60,117,0.08)] backdrop-blur-md"
+        : "h-28 bg-white/85 backdrop-blur-sm"
+        }`}
     >
       <div className="mx-auto flex h-full max-w-[1440px] items-center gap-[20px] px-[clamp(1.2rem,4vw,3.5rem)]">
         {/* Brand logo container - exactly 30% width minus half of the gap */}
@@ -256,12 +254,13 @@ export default function Header() {
           onMouseEnter={() => setActiveDropdown(null)}
           className="group flex shrink-0 items-center lg:w-[calc(30%-10px)] lg:max-w-[calc(30%-10px)]"
         >
-          <img
-            src="/Conveyors & Equipments (1).png"
+          <Image
+            src="/logo-center.png"
             alt="Yoke Conveyors & Equipments"
             width={600}
             height={600}
             className="w-[150px] h-[150px] lg:w-[200px] lg:h-[200px] object-contain object-left transition-all duration-300 group-hover:scale-[1.01]"
+            priority
           />
         </a>
 
@@ -273,6 +272,13 @@ export default function Header() {
             className="text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805]"
           >
             Home
+          </a>
+          <a
+            href="/about-us"
+            onMouseEnter={() => setActiveDropdown(null)}
+            className="text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805]"
+          >
+            About
           </a>
 
           <DropdownTrigger type="solutions" label="Solutions" href="/products?tab=solutions" />
@@ -286,13 +292,7 @@ export default function Header() {
           >
             Full Catalog
           </a>
-          <a
-            href="/about-us"
-            onMouseEnter={() => setActiveDropdown(null)}
-            className="text-sm font-bold tracking-wide transition-colors duration-200 hover:text-[#F18805]"
-          >
-            About
-          </a>
+
         </nav>
 
         {/* Hamburger trigger */}
@@ -367,9 +367,8 @@ export default function Header() {
                       >
                         {label}
                         <ChevronDown
-                          className={`size-5 transition-transform duration-200 ${
-                            isOpen ? "rotate-180 text-[#F18805]" : ""
-                          }`}
+                          className={`size-5 transition-transform duration-200 ${isOpen ? "rotate-180 text-[#F18805]" : ""
+                            }`}
                         />
                       </button>
                       <AnimatePresence initial={false}>

@@ -55,11 +55,11 @@ export default function AboutHero() {
       <div className="pointer-events-none absolute -left-48 top-1/4 h-[500px] w-[500px] rounded-full bg-[#083C75]/5 blur-[120px]" />
       <div className="pointer-events-none absolute -right-48 bottom-1/4 h-[500px] w-[500px] rounded-full bg-[#F18805]/5 blur-[120px]" />
 
-      <div className="relative z-10 mx-auto max-w-[1440px] px-[clamp(1.5rem,5vw,4.5rem)]">
+      <div className="relative z-10 mx-auto w-full px-[15px]">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
-          
+
           {/* Left Column: Title and Slide Text Carousel */}
-          <div className="lg:col-span-6 xl:col-span-5 flex flex-col justify-center">
+          <div className="lg:col-span-5 flex flex-col justify-center">
             <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-full border border-[#F18805]/20 bg-[#F18805]/5 px-4 py-1.5 backdrop-blur-sm">
               <span className="h-2 w-2 rounded-full bg-[#F18805] animate-pulse" />
               <span className="text-[0.7rem] font-bold uppercase tracking-[0.2rem] text-[#F18805]">
@@ -67,7 +67,7 @@ export default function AboutHero() {
               </span>
             </div>
 
-            <h1 className="text-[clamp(2.5rem,4.5vw,4rem)] font-black leading-[1.05] tracking-tight text-[#083C75]">
+            <h1 className="text-[clamp(2.5rem,4.5vw,5rem)] font-black leading-[1.05] tracking-tight text-[#083C75]">
               Next-Gen Conveying{" "}
               <span className="bg-gradient-to-r from-[#F18805] via-[#ffaa3a] to-[#F18805] bg-clip-text text-transparent">
                 Infrastructure.
@@ -88,10 +88,10 @@ export default function AboutHero() {
                   <span className="text-[0.8rem] font-extrabold uppercase tracking-widest text-[#F18805]">
                     {slides[activeIndex].tag}
                   </span>
-                  <h2 className="text-2xl font-black tracking-tight text-[#083C75]">
+                  <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-[#083C75]">
                     {slides[activeIndex].title}
                   </h2>
-                  <p className="text-sm font-medium leading-relaxed text-[#083C75]/75">
+                  <p className="text-sm lg:text-base font-medium leading-relaxed text-[#083C75]/75">
                     {slides[activeIndex].description}
                   </p>
                 </motion.div>
@@ -121,8 +121,8 @@ export default function AboutHero() {
           </div>
 
           {/* Right Column: Transparent Compact Image Carousel Card */}
-          <div className="relative mt-8 flex w-full items-center justify-center lg:col-span-6 lg:mt-0 xl:col-span-7">
-            <div className="relative h-[360px] w-full max-w-[500px] overflow-hidden">
+          <div className="relative mt-8 flex w-full items-center justify-center lg:col-span-7 lg:mt-0">
+            <div className="relative h-[400px] lg:h-[70vh] min-h-[500px] w-full max-w-[900px] overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}

@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight, ChevronLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import FactoryIllustration from "./automatic-factory-with-conveyor-line-robotic-arms-assembly-process-illustration.png";
 
+import { conveyorData } from "../data/conveyorData";
+
 /* ────────────────────────────────────────────────────────────
-   12 industries with industrial spec metadata.
-   Images are placeholders — swap for your asset/CDN URLs.
+   Industries / Solutions with real data from conveyorData
    ──────────────────────────────────────────────────────────── */
 type Industry = {
   title: string;
@@ -21,149 +23,62 @@ type Industry = {
   image: string;
   category: string;
   spec: string;
+  slug?: string;
 };
 
-const industries: Industry[] = [
-  {
-    title: "Food & Beverage",
-    desc: "Hygienic, FDA-grade automated conveyors and washing systems for food processing.",
-    image:
-      "https://images.unsplash.com/photo-1565043666747-69f6646db940?q=80&w=1200&auto=format&fit=crop",
-    category: "Hygienic Lines",
-    spec: "FDA Grade · Stainless Steel · CIP Ready",
-  },
-  {
-    title: "Pharmaceuticals",
-    desc: "Precision handling lines for delicate packaging, blister packs, and sterile environments.",
-    image:
-      "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?q=80&w=1200&auto=format&fit=crop",
-    category: "Cleanroom Class",
-    spec: "ISO Class 7 · GMP Compliant",
-  },
-  {
-    title: "Seed & Agriculture",
-    desc: "Heavy-duty sorting and bagging conveyor solutions for high-volume agricultural output.",
-    image:
-      "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1200&auto=format&fit=crop",
-    category: "Bulk Handling",
-    spec: "Variable Speed · Up to 80 TPH",
-  },
-  {
-    title: "Warehousing & FMCG",
-    desc: "Truck loading, motorized rollers, and gravity belts for rapid logistics and distribution.",
-    image:
-      "https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1200&auto=format&fit=crop",
-    category: "Logistics Systems",
-    spec: "Modular · 24/7 Duty Cycle",
-  },
-  {
-    title: "E-Commerce & Retail",
-    desc: "High-speed sorting systems designed for complex distribution hubs and fulfillment centers.",
-    image:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8d256?q=80&w=1200&auto=format&fit=crop",
-    category: "Sortation",
-    spec: "10,000+ Parcels/Hour",
-  },
-  {
-    title: "Automotive & Assembly",
-    desc: "Robust structural assembly lines and heavy-component transfer systems.",
-    image:
-      "https://images.unsplash.com/photo-1565043666747-69f6646db940?q=80&w=1200&auto=format&fit=crop",
-    category: "Assembly Transfer",
-    spec: "Heavy Payload · Tier-1 Spec",
-  },
-  {
-    title: "Mining & Heavy Duty",
-    desc: "Impact-resistant bulk handling conveyors engineered for abrasive and rugged environments.",
-    image:
-      "https://images.unsplash.com/photo-1578357065094-1a3b1ce121ce?q=80&w=1200&auto=format&fit=crop",
-    category: "Bulk · Abrasive",
-    spec: "Drop-Forged · IP67 Frame",
-  },
-  {
-    title: "Cement & Building Materials",
-    desc: "Abrasion-resistant belt and bucket systems for clinker, aggregate, and bulk material transport.",
-    image:
-      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop",
-    category: "Bulk Material",
-    spec: "Up to 150°C · Hot Clinker Rated",
-  },
-  {
-    title: "Steel & Metal Processing",
-    desc: "Drop-forged yoke chain conveyors and slat lines built for high-temperature, high-load duty.",
-    image:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200&auto=format&fit=crop",
-    category: "High Temp",
-    spec: "Yoke Chain · 600°C Tolerance",
-  },
-  {
-    title: "Airport & Baggage Handling",
-    desc: "Tilt-tray sorters and pouch systems for fast, accurate baggage and parcel routing.",
-    image:
-      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop",
-    category: "Tilt-Tray Sorter",
-    spec: "99.98% Read Rate",
-  },
-  {
-    title: "Chemical & Fertilizer",
-    desc: "Corrosion-resistant handling and bagging lines engineered for aggressive process environments.",
-    image:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200&auto=format&fit=crop",
-    category: "Corrosion Grade",
-    spec: "ATEX Zone 22 · FRP Frame",
-  },
-  {
-    title: "Foundry & Forging",
-    desc: "Heat-grade transfer and accumulation conveyors for castings, forgings, and hot components.",
-    image:
-      "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=1200&auto=format&fit=crop",
-    category: "Heat Transfer",
-    spec: "Forged Steel · Continuous Duty",
-  },
-];
+const industries: Industry[] = conveyorData.conveyorSystemsData.flatMap(
+  (categoryData) => categoryData.items.map((item) => ({
+    title: item.title,
+    desc: item.description,
+    image: item.images && item.images.length > 0 ? item.images[0] : "https://images.unsplash.com/photo-1565043666747-69f6646db940?q=80&w=1200&auto=format&fit=crop",
+    category: categoryData.category,
+    spec: item.specialty,
+    slug: item.slug
+  }))
+);
 
-const EASE = "cubic-bezier(0.21,0.47,0.32,0.98)";
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 /* ════════════════════════════════════════════════════════════
-   Heading
+   Heading Section — Zara-like Minimalist Typography
    ════════════════════════════════════════════════════════════ */
 function Heading() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 25 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="w-full lg:w-[50%] lg:max-w-[650px]"
+      transition={{ duration: 1, ease: EASE }}
+      className="w-full lg:max-w-[620px] z-10"
     >
-      <div className="mb-3 flex items-center gap-3">
-        <span className="h-px w-8 bg-[#F18805]" />
-        <span className="text-[0.65rem] font-extrabold uppercase tracking-[0.25em] text-[#F18805]">
+      <div className="mb-4 flex items-center gap-3">
+        <span className="h-[1px] w-8 bg-[#04091a]" />
+        <span className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-[#04091a]/80">
           Industries Served · 12 Sectors
         </span>
       </div>
 
-      <h2 className="mb-5 text-[clamp(1.8rem,3.2vh,2.8rem)] font-black leading-[1.25] tracking-[-0.015em] text-[#083C75]">
+      <h2 className="mb-5 text-[clamp(2.2rem,4.5vw,3.6rem)] font-light tracking-tight text-[#04091a] leading-[1.1]">
         Intralogistic solutions
         <br />
-        <span className="text-[#F18805]">engineered</span> for your industry.
+        <span className="font-medium italic text-[#F18805]">engineered</span> for scale.
       </h2>
 
-      <p className="max-w-[460px] text-[0.98rem] font-medium leading-[1.75] text-[#083C75]/70">
-        Together we find the right solution for your individual requirements — from precision
-        food-grade belts to heavy-duty mining and forging conveyors.
+      <p className="text-[0.98rem] font-light leading-[1.7] text-[#04091a]/70 max-w-[500px]">
+        Together we build the right system for your individual requirements — from high-precision
+        sanitary lines to heavy-duty mining and forging conveyors.
       </p>
 
-      {/* Industrial stat strip - smaller padding/margins for laptop compatibility */}
-      <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 border-t border-[#083C75]/10 pt-5">
+      {/* Industrial stats in clean minimalist lines */}
+      <div className="mt-8 flex flex-wrap gap-x-12 gap-y-4 border-t border-[#04091a]/10 pt-6">
         {[
-          ["12+", "Industries"],
+          ["12", "Industries"],
           ["500+", "Installations"],
-          ["25+", "Years"],
+          ["25+", "Years Active"],
         ].map(([n, label]) => (
           <div key={label} className="flex flex-col">
-            <span className="text-[1.3rem] font-black leading-normal text-[#083C75]">{n}</span>
-            <span className="mt-1 text-[0.6rem] font-bold uppercase tracking-[0.22em] text-[#083C75]/55">
+            <span className="text-2xl font-light leading-none text-[#04091a]">{n}</span>
+            <span className="mt-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.25em] text-[#04091a]/50">
               {label}
             </span>
           </div>
@@ -174,7 +89,7 @@ function Heading() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   Card — taller, with serial #, category, and spec strip
+   Card Component — Zara Aesthetic (Light / High Contrast)
    ════════════════════════════════════════════════════════════ */
 function IndustryCard({
   item,
@@ -193,114 +108,127 @@ function IndustryCard({
   const totalStr = String(total).padStart(2, "0");
 
   return (
-    <div
-      className={`group relative shrink-0 cursor-pointer overflow-hidden rounded-[28px] ring-1 ring-black/5 ${className}`}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 100px 0px 0px" }}
+      transition={{ duration: 0.8, delay: (index % 3) * 0.1, ease: EASE }}
+      className={`group relative shrink-0 cursor-pointer overflow-hidden rounded-[4px] border border-neutral-200 bg-white shadow-sm transition-all duration-700 hover:border-[#04091a] ${className}`}
     >
-      {/* image */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 z-10 bg-[#083C75]/10" />
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-neutral-100">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={item.image}
           alt={item.title}
           loading="lazy"
-          draggable={false}
-          className="h-full w-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.12]"
+          className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05] opacity-90 group-hover:opacity-100"
         />
+        {/* Zara-like light-contrast gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-black/5 transition-opacity duration-500" />
       </div>
 
-      {/* readability gradient */}
-      <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#062a55] via-[#083C75]/55 to-transparent opacity-85 transition-opacity duration-500 group-hover:opacity-95" />
-
-      {/* diagonal corner accent */}
-      <div className="pointer-events-none absolute -right-12 -top-12 z-20 h-32 w-32 rotate-45 bg-[#F18805]/85 transition-transform duration-700 group-hover:-translate-y-1 group-hover:translate-x-1" />
-
-      {/* top accent line */}
-      <div
-        className={`absolute left-0 top-0 z-30 h-[6px] w-full bg-[#F18805] transition-transform duration-500 ${open ? "translate-y-0" : "-translate-y-full group-hover:translate-y-0"
-          }`}
-        style={{ transitionTimingFunction: EASE }}
-      />
-
-      {/* SERIAL — top-left */}
-      <div className="absolute left-7 top-7 z-30 flex items-center gap-2 text-white">
-        <span className="font-mono text-[2.25rem] font-black leading-none tracking-tight">
+      {/* Serial & Total Info — Minimal layout */}
+      <div className="absolute left-6 top-6 z-10 flex items-baseline gap-1">
+        <span className="font-mono text-lg font-medium tracking-tight text-[#04091a]">
           {serial}
         </span>
-        <span className="mt-2 font-mono text-[0.7rem] font-bold tracking-widest text-white/65">
-          / {totalStr}
+        <span className="font-mono text-[0.62rem] font-bold text-[#04091a]/40">
+          /{totalStr}
         </span>
       </div>
 
-      {/* CATEGORY chip — top-right (under the orange corner) */}
-      <div className="absolute right-7 top-7 z-30">
-        <span className="inline-block rounded-full border border-white/30 bg-black/25 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md">
+      {/* Category Tag */}
+      <div className="absolute right-6 top-6 z-10">
+        <span className="inline-block rounded-[2px] border border-[#04091a]/15 bg-white/70 px-2.5 py-0.5 text-[0.6rem] font-semibold uppercase tracking-widest text-[#04091a] backdrop-blur-sm">
           {item.category}
         </span>
       </div>
 
-      {/* CONTENT — bottom */}
+      {/* Card Content */}
       <div
-        className={`absolute inset-x-0 bottom-0 z-30 flex flex-col gap-4 p-7 sm:p-8 transition-transform duration-500 ${open ? "translate-y-0" : "translate-y-8 group-hover:translate-y-0"
-          }`}
-        style={{ transitionTimingFunction: EASE }}
+        className={`absolute inset-x-0 bottom-0 z-10 flex flex-col gap-3 p-6 sm:p-8 transition-transform duration-500 ${
+          open ? "translate-y-0" : "translate-y-12 group-hover:translate-y-0"
+        }`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
       >
-        <h3 className="text-[1.75rem] font-black leading-[1.2] text-white sm:text-[2rem] lg:text-[2.2rem]">
+        <h3 className="text-xl font-light uppercase tracking-wide text-[#04091a] sm:text-2xl">
           {item.title}
         </h3>
 
         <p
-          className={`text-[0.95rem] font-medium leading-[1.7] text-white/85 transition-opacity duration-500 lg:text-[1.02rem] ${open ? "opacity-100" : "opacity-0 group-hover:opacity-100 delay-100"
-            }`}
+          className={`text-[0.88rem] font-light leading-relaxed text-neutral-600 transition-all duration-500 ${
+            open ? "opacity-100 max-h-[80px]" : "opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-[80px] overflow-hidden"
+          }`}
         >
           {item.desc}
         </p>
 
-        {/* SPEC strip */}
+        {/* Technical Specs */}
         <div
-          className={`flex items-center gap-3 border-t border-white/20 pt-4 transition-opacity duration-500 ${open ? "opacity-100" : "opacity-0 group-hover:opacity-100 delay-150"
-            }`}
+          className={`flex items-center gap-2.5 border-t border-neutral-200 pt-4 transition-all duration-500 ${
+            open ? "opacity-100" : "opacity-0 group-hover:opacity-100 delay-75"
+          }`}
         >
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#F18805]" />
-          <span className="font-mono text-[0.72rem] font-bold uppercase tracking-[0.15em] text-white/75">
+          <span className="h-[1px] w-3 bg-[#F18805]" />
+          <span className="font-mono text-[0.65rem] font-semibold uppercase tracking-wider text-neutral-500">
             {item.spec}
           </span>
         </div>
 
-        {/* CTA row */}
-        <div
-          className={`mt-2 flex items-center justify-between transition-all duration-500 ease-out ${open
-            ? "translate-x-0 opacity-100"
-            : "-translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 delay-200"
+        {/* Explore Button / CTA */}
+        {item.slug ? (
+          <Link
+            href={`/products/${item.slug}`}
+            className={`mt-1 flex items-center justify-between transition-all duration-500 ${
+              open
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 delay-100"
             }`}
-        >
-          <span className="text-[0.78rem] font-bold uppercase tracking-[0.18em] text-white">
-            Explore Solutions
-          </span>
-          <div className="flex size-12 items-center justify-center rounded-full bg-[#F18805] shadow-[0_8px_24px_-6px_rgba(241,136,5,0.6)] transition-transform duration-300 group-hover:translate-x-1 group-hover:scale-105">
-            <ArrowRight className="size-5 text-white" />
+          >
+            <span className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#04091a] border-b border-[#04091a] pb-0.5">
+              Explore Solutions
+            </span>
+            <div className="flex size-9 items-center justify-center rounded-full bg-[#04091a] text-white transition-all duration-300 group-hover:translate-x-1 group-hover:scale-105">
+              <ArrowRight className="size-4" />
+            </div>
+          </Link>
+        ) : (
+          <div
+            className={`mt-1 flex items-center justify-between transition-all duration-500 ${
+              open
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 delay-100"
+            }`}
+          >
+            <span className="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#04091a] border-b border-[#04091a] pb-0.5">
+              Explore Solutions
+            </span>
+            <div className="flex size-9 items-center justify-center rounded-full bg-[#04091a] text-white transition-all duration-300 group-hover:translate-x-1 group-hover:scale-105">
+              <ArrowRight className="size-4" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 /* ════════════════════════════════════════════════════════════
-   Backdrop — blueprint grid + corner registration marks
+   Backdrop Grid Lines (Light Minimalist)
    ════════════════════════════════════════════════════════════ */
 function GridBackdrop() {
   return (
     <>
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(#083C75 1px, transparent 1px), linear-gradient(to right, #083C75 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "linear-gradient(#000000 1px, transparent 1px), linear-gradient(to right, #000000 1px, transparent 1px)",
+          backgroundSize: "65px 65px",
         }}
       />
-      {/* corner registration marks (technical drawing feel) */}
+      {/* corner registration marks */}
       {[
         "left-6 top-6",
         "right-6 top-6 rotate-90",
@@ -309,7 +237,7 @@ function GridBackdrop() {
       ].map((pos) => (
         <svg
           key={pos}
-          className={`pointer-events-none absolute z-10 size-6 text-[#083C75]/25 ${pos}`}
+          className={`pointer-events-none absolute z-10 size-6 text-[#04091a]/10 ${pos}`}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -323,7 +251,7 @@ function GridBackdrop() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   DESKTOP — scroll-pinned horizontal rail (lg and up)
+   DESKTOP RAIL (lg and up) — 160vh overall height, white theme
    ════════════════════════════════════════════════════════════ */
 function DesktopRail() {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -356,42 +284,41 @@ function DesktopRail() {
   return (
     <section
       ref={targetRef}
-      className="relative hidden h-[300vh] bg-gradient-to-b from-white via-[#fafbfd] to-white lg:block"
+      className="relative hidden h-[160vh] bg-white lg:block"
     >
-      <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden">
+      <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden py-12 justify-between">
         <GridBackdrop />
 
-        {/* ── TOP ── heading + much larger absolute illustration */}
-        <div className="relative z-10 mx-auto flex w-full max-w-[1500px] shrink-0 items-start px-[clamp(1.5rem,4vw,3.5rem)] pt-[clamp(1.5rem,3.5vh,2.5rem)]">
+        {/* Top Header Row */}
+        <div className="relative z-10 mx-auto flex w-full max-w-[1400px] shrink-0 items-start px-8 justify-between gap-12">
           <Heading />
 
           <motion.div
-            initial={{ opacity: 0, x: 60 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="absolute right-[clamp(1.5rem,4vw,3.5rem)] top-[clamp(0.2rem,0.5vh,1rem)] hidden w-[62%] justify-end lg:flex"
+            transition={{ duration: 1, delay: 0.2, ease: EASE }}
+            className="relative flex-1 max-w-[750px] flex items-center justify-center"
           >
-            {/* soft orange aura behind the illustration */}
-            <div className="absolute right-0 top-1/2 h-[100%] w-[100%] -translate-y-1/2 rounded-full bg-[#F18805]/10 blur-3xl" />
+            <div className="absolute right-0 top-1/2 h-[80%] w-[80%] -translate-y-1/2 rounded-full bg-[#F18805]/10 blur-[100px]" />
             <Image
               src={FactoryIllustration}
-              alt="Automatic factory with conveyor line and robotic arms assembly process"
-              className="relative w-full max-w-[1150px] object-contain drop-shadow-[0_30px_60px_rgba(8,60,117,0.22)] max-h-[35vh] xl:max-h-[44vh]"
+              alt="Automatic factory system illustration"
+              className="relative w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.1)] transition-transform duration-700 hover:scale-105 hover:-translate-y-2"
               priority
             />
           </motion.div>
         </div>
 
-        {/* ── MIDDLE ── taller, more imposing cards */}
+        {/* Horizontal Track Row */}
         <div
           ref={viewportRef}
-          className="relative z-20 mt-[clamp(0.5rem,1.5vh,2rem)] flex w-full flex-grow items-center overflow-hidden"
+          className="relative z-20 flex w-full flex-grow items-center overflow-hidden my-4"
         >
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className="flex w-max gap-[clamp(1.5rem,2.5vw,2rem)] px-[clamp(1.5rem,4vw,3.5rem)]"
+            className="flex w-max gap-6 px-8"
           >
             {industries.map((item, i) => (
               <IndustryCard
@@ -399,21 +326,21 @@ function DesktopRail() {
                 item={item}
                 index={i}
                 total={industries.length}
-                className="h-[clamp(480px,68vh,820px)] w-[clamp(380px,40vw,640px)] xl:h-[clamp(560px,72vh,900px)] xl:w-[clamp(440px,42vw,700px)]"
+                className="h-[380px] w-[300px] sm:h-[400px] sm:w-[320px] xl:h-[420px] xl:w-[340px]"
               />
             ))}
           </motion.div>
         </div>
 
-        {/* ── BOTTOM ── progress + counter */}
-        <div className="relative z-20 mx-[clamp(1.5rem,4vw,3.5rem)] mb-[clamp(2rem,4vh,4rem)] flex items-center gap-4">
-          <span className="font-mono text-[0.72rem] font-bold tracking-widest text-[#083C75]/60">
+        {/* Bottom Pagination Row */}
+        <div className="relative z-20 mx-auto w-full max-w-[1400px] px-8 flex items-center gap-6">
+          <span className="font-mono text-xs font-bold tracking-widest text-[#04091a]/40">
             01
           </span>
-          <div className="h-[4px] flex-1 overflow-hidden rounded-full bg-[#083C75]/10">
-            <motion.div style={{ scaleX: scrollYProgress }} className="h-full origin-left bg-[#F18805]" />
+          <div className="h-[1px] flex-1 overflow-hidden bg-neutral-200">
+            <motion.div style={{ scaleX: scrollYProgress }} className="h-full origin-left bg-[#04091a]" />
           </div>
-          <span className="font-mono text-[0.72rem] font-bold tracking-widest text-[#083C75]/60">
+          <span className="font-mono text-xs font-bold tracking-widest text-[#04091a]/40">
             {String(industries.length).padStart(2, "0")}
           </span>
         </div>
@@ -423,56 +350,116 @@ function DesktopRail() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   MOBILE / TABLET — native swipe carousel
+   MOBILE / TABLET CAROUSEL (lg and down) — White Theme
    ════════════════════════════════════════════════════════════ */
 function MobileRail() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, clientWidth } = scrollRef.current;
+    if (clientWidth === 0) return;
+    const newIdx = Math.round(scrollLeft / (clientWidth * 0.85));
+    setActiveIdx(Math.max(0, Math.min(industries.length - 1, newIdx)));
+  };
+
+  const slide = (direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const cardWidth = container.clientWidth * 0.85;
+    const targetScroll = container.scrollLeft + (direction === "left" ? -cardWidth : cardWidth);
+    container.scrollTo({
+      left: targetScroll,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <section className="relative bg-white pt-6 pb-16 lg:hidden">
+    <section className="relative bg-white pt-16 pb-20 lg:hidden overflow-hidden border-t border-neutral-100">
       <GridBackdrop />
 
-      <div className="relative z-10 mx-auto mb-8 w-full max-w-[1400px] px-[clamp(1.25rem,5vw,3rem)]">
+      <div className="relative z-10 mx-auto mb-10 w-full px-6 md:px-12">
         <Heading />
       </div>
 
-      {/* compact illustration for mobile */}
-      <div className="relative z-10 mx-auto mb-6 w-full max-w-[560px] px-[clamp(1.25rem,5vw,3rem)] sm:mb-10">
-        <Image
-          src={FactoryIllustration}
-          alt="Automatic factory with conveyor line"
-          className="w-full object-contain drop-shadow-[0_20px_40px_rgba(8,60,117,0.15)]"
-        />
+      {/* Swipe Container */}
+      <div className="relative z-10">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 md:px-12 pb-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {industries.map((item, i) => (
+            <IndustryCard
+              key={i}
+              item={item}
+              index={i}
+              total={industries.length}
+              open={activeIdx === i}
+              className="h-[420px] w-[80vw] max-w-[320px] snap-center"
+            />
+          ))}
+        </div>
+
+        {/* Navigation Buttons for Tablet */}
+        <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 pointer-events-none hidden md:flex justify-between px-4">
+          <button
+            onClick={() => slide("left")}
+            disabled={activeIdx === 0}
+            className={`pointer-events-auto flex size-12 items-center justify-center rounded-full border border-neutral-200 bg-white/90 backdrop-blur-md text-[#04091a] shadow-sm transition-all hover:bg-neutral-100 disabled:opacity-40`}
+          >
+            <ChevronLeft className="size-6" />
+          </button>
+          <button
+            onClick={() => slide("right")}
+            disabled={activeIdx === industries.length - 1}
+            className={`pointer-events-auto flex size-12 items-center justify-center rounded-full border border-neutral-200 bg-white/90 backdrop-blur-md text-[#04091a] shadow-sm transition-all hover:bg-neutral-100 disabled:opacity-40`}
+          >
+            <ChevronRight className="size-6" />
+          </button>
+        </div>
       </div>
 
-      <div className="relative z-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[clamp(1.25rem,5vw,3rem)] pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {industries.map((item, i) => (
-          <IndustryCard
-            key={i}
-            item={item}
-            index={i}
-            total={industries.length}
-            open
-            className="h-[clamp(440px,68vh,560px)] w-[82vw] max-w-[360px] snap-center"
-          />
-        ))}
+      {/* Active Dot Indicators */}
+      <div className="relative z-10 mt-6 flex flex-col items-center gap-4 px-6">
+        <div className="flex gap-2">
+          {industries.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                if (!scrollRef.current) return;
+                const container = scrollRef.current;
+                const cardWidth = container.clientWidth * 0.85;
+                container.scrollTo({
+                  left: i * cardWidth,
+                  behavior: "smooth",
+                });
+              }}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                activeIdx === i ? "w-6 bg-[#04091a]" : "w-1 bg-neutral-200"
+              }`}
+            />
+          ))}
+        </div>
+        <p className="font-mono text-[0.65rem] font-bold uppercase tracking-widest text-[#04091a]/40">
+          Swipe to discover ({activeIdx + 1}/{industries.length})
+        </p>
       </div>
-
-      <p className="relative z-10 mt-4 px-[clamp(1.25rem,5vw,3rem)] font-mono text-[0.7rem] font-bold uppercase tracking-[0.25em] text-[#083C75]/45">
-        ← Swipe to explore all {industries.length} industries
-      </p>
     </section>
   );
 }
 
 /* ════════════════════════════════════════════════════════════
-   Reduced-motion fallback
+   REDUCED MOTION FALLBACK
    ════════════════════════════════════════════════════════════ */
 function StaticGrid() {
   return (
-    <section className="relative bg-white pt-10 pb-20">
+    <section className="relative bg-white py-20">
       <GridBackdrop />
-      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,5vw,3.5rem)]">
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-8">
         <Heading />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {industries.map((item, i) => (
             <IndustryCard
               key={i}
@@ -480,7 +467,7 @@ function StaticGrid() {
               index={i}
               total={industries.length}
               open
-              className="h-[480px] w-full"
+              className="h-[400px] w-full"
             />
           ))}
         </div>

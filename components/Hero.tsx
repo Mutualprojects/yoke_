@@ -33,16 +33,7 @@ const HERO_SLIDES: HeroSlide[] = [
     videoUrl: "https://ik.imagekit.io/ugyhmls22/0_Packages_Conveyor_Belt_1920x1080.mp4",
     videoType: "video/mp4",
   },
-  {
-    id: 2,
-    title: "Secondary Packaging Machines",
-    navLabel: "Secondary Packaging",
-    subtitle: "End-of-Line Efficiency",
-    description:
-      "State-of-the-art shrink wrappers, case packers, and palletizing systems for high-speed secondary packaging operations.",
-    videoUrl: "https://ik.imagekit.io/ugyhmls22/0_Packaging_Machine_1920x1080.mp4",
-    videoType: "video/mp4",
-  },
+
   {
     id: 3,
     title: "Fabrication of Structures & Mezzanine Floors",
