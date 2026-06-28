@@ -25,9 +25,10 @@ export default function Home() {
 
       <Values />
       <CatalogIndex />
+      <ClientMarquee />
       <TestimonialTape />
       <AboutStory />
-      <ClientMarquee />
+
       <Footer />
     </div>
   );
