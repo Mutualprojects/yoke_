@@ -4,6 +4,7 @@ import React from "react";
 import AboutHero from "./AboutHero";
 import VisionMissionSection from "../../components/VisionMissionSection";
 import AboutStorySection from "../../components/AboutStorySection";
+import OurProcess from "../../components/OurProcess";
 import Footer from "@/components/Footer";
 
 export default function AboutUsPage() {
@@ -17,6 +18,7 @@ export default function AboutUsPage() {
 
       {/* Yoke Conveyors Story Overview */}
       <AboutStorySection />
+      <OurProcess />
       <VisionMissionSection />
 
       <Footer />
