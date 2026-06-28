@@ -10,6 +10,7 @@ import Values from "../components/Values";
 import CatalogIndex from "../components/CatalogIndex";
 import TestimonialTape from "../components/TestimonialTape";
 import AboutStory from "@/components/AboutStory";
+import ClientMarquee from "@/components/ClientMarquee";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
       <CatalogIndex />
       <TestimonialTape />
       <AboutStory />
+      <ClientMarquee />
       <Footer />
     </div>
   );
