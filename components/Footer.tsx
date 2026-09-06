@@ -142,7 +142,7 @@ export default function Footer() {
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-white/5 text-[#F18805]">
                   <Mail className="h-4 w-4" />
                 </div>
-                <a href="mailto:info@yokeconveyors.com">info@yokeconveyors.com</a>
+                <a href="mailto:yokeconveyors@gmail.com">yokeconveyors@gmail.com</a>
               </li>
             </ul>
           </motion.div>
